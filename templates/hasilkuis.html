@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %}{% endblock %}Hasil Kuis</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery-3.6.1.js"></script>
+    <script src="static/js/printThis.js"></script>
+    <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+    <script type="text/javascript" src="static/js/jquery.canvasjs.min.js"></script>
+    {% endblock%}
+</head>
+<body>
+    <div class="pt-3 justify-content-center align-items-center text-center">
+        <button id="print" class="btn btn-success">
+            <img src="static/img/icons/download.svg" class="rounded " style="width: 30px;">   Save as PDF / Print</button>
+    </div>
+    <div id="main">
+    <div class="container-fluid h-custom">
+        <div class="justify-content-center align-items-center pt-3">
+        <h2 class="text-center">Hasil Pelaksanaan Kuis</h2>
+        <h5 class="text-center">Topik Kuis : {{data.1}}</h5>
+        <h5 class="text-center">Kode Pelaksanaan : {{data.0}}</h5>
+        </div>
+    </div>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <h5 class="pt-5 pb-4 text-center">Persentase tiap Butir Soal</h5>
+                <div id="chartContainer" style="height: 350PX; width: 100%;"></div>
+                </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 text-center">
+                <h5 class="pt-5 pb-4 text-center">Persentase tiap Indikator / CPL</h5>
+                <div id="chartContainer2" style="height: 300PX; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center ">
+            <div class="col-md-10 col-lg-6 col-xl-6">
+                <h5 class="pt-5 pb-4 text-center">Tabel Nilai</h5>
+                <table class="table table-striped">
+                    <tr class="text-center">
+                        <th>Nama</th>
+                        <th>Score Kuis</th>
+                        <th>Nilai</th>
+                        <th>Skala 4</th>
+                        <th>Grade</th>
+                    </tr>
+                    {% for i in result %}
+                    <tr>
+                        <th scope="row" class="px-4">{{i.0}}</td>
+                        <td class="text-center">{{i.2}}</td>
+                        <th class="text-center">{{i.3}}</th>
+                        <td class="text-center">{{i.4}}</td>
+                        <th class="text-center">{{i.5}}</th>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-md-6 col-lg-5 col-xl-4 offset-xl-1 text-center">
+                <h5 class="pt-5 pb-4">Standar PAP Sebagai Berikut : </h5>
+                <table class="table">
+                    <tr  class="table-primary">
+                        <th>Huruf</th>
+                        <th>Angka</th>
+                        <th>Nilai Akhir</th>
+                        <th>Predikat</th>
+                    </tr>
+                    <tr class="table-success">
+                        <td>A</td>
+                        <td>4</td>
+                        <td>Nilai > 80</td>
+                        <td>Unggul</td>
+                    </tr>
+                    <tr class="table-success">
+                        <td>AB</td>
+                        <td>3.5</td>
+                        <td>75 > Nilai < 80</td>
+                        <td>Baik Sekali</td>
+                    </tr>
+                    <tr class="table-success">
+                        <td>B</td>
+                        <td>3</td>
+                        <td>70 > Nilai < 75</td>
+                        <td>Baik</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td>BC</td>
+                        <td>2.5</td>
+                        <td>65 > Nilai < 70</td>
+                        <td>Lebih dari Cukup</td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td>C</td>
+                        <td>2</td>
+                        <td>55 > Nilai < 65</td>
+                        <td>Cukup</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>D</td>
+                        <td>1</td>
+                        <td>40 > Nilai < 55</td>
+                        <td>Kurang</td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>E</td>
+                        <td>0</td>
+                        <td>< 40</td>
+                        <td>Gagal</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var value = [];
+        var value2 = [];
+
+        diagram_batang();
+        diagram_CPL();
+
+        $('#print').on('click', function(){
+            $('#main').printThis();
+        });
+
+        var options = {
+            animationEnabled: true,
+
+            title: {
+                text: ""              
+            },
+            axisX: {
+                title: "Nomor Soal",
+            },
+            axisY: {
+                suffix: "%",
+                minimum: 0,
+                maximum: 100,
+                valueFormatString : "00",
+            },
+            data: [              
+            {
+                type: "column",
+                dataPoints: value
+            }
+            ],
+        };
+
+        var options2 = {
+            animationEnabled: true,
+
+            title: {
+                text: ""              
+            },
+            axisY: {
+                suffix: "%",
+                maximum: 100,
+                minimum: 0,
+                valueFormatString : "00",
+            },
+            axisX: {
+                title: "Indikator / CPL",
+            },
+            data: [              
+            {
+                type: "bar",
+                dataPoints: value2
+            }
+            ],
+        };
+
+
+        function diagram_batang() {
+            $.getJSON($SCRIPT_ROOT + '/tabel_hasil_kuis',
+
+            function(data){
+                let dataku = JSON.stringify(data.data_tabel)
+                let data_tabel = JSON.parse(dataku)
+                console.log(data_tabel)
+                console.log(dataku)   
+                for (let i in data_tabel) {
+                    value.push({label: data_tabel[i].nomor, y:data_tabel[i].jawaban_benar})
+                }
+                $("#chartContainer").CanvasJSChart(options);
+                $('#chartContainer').show();
+            });
+        }
+
+        function diagram_CPL() {
+            $.getJSON($SCRIPT_ROOT + '/tabel_cpl',
+
+            function(data){
+                let dataku = JSON.stringify(data.data_tabel)
+                let data_tabel = JSON.parse(dataku)
+                console.log(data_tabel)
+                console.log(dataku)   
+                for (let i in data_tabel) {
+                    value2.push({label: data_tabel[i].cpl, y:data_tabel[i].j_benar})
+                }
+                $("#chartContainer2").CanvasJSChart(options2);
+                $('#chartContainer2').show();
+            });
+        }
+        
+    })
+</script>
+</html>

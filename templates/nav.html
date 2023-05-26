@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %}{% endblock %}KECAPI</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery-3.6.1.js"></script>
+    <title>Bootstrap Example</title>
+    {% endblock%}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="pt-3 container-fluid container-mw">
+            <a class="navbar-brand" href="#">
+                <img src="static/img/logokotak.png" alt="Bootstrap" width="30" height="24">
+                KECAPI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index')}}" id="nav-homepage">Homepage</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" aria-current="page" id="nav-kuis" href="{{url_for('kuis')}}">Kuis</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="nav-pengajar" href="{{url_for('pengajar')}}">Pengajar</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="nav-panduan" href="{{url_for('panduan')}}">Panduan</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-tentang" href="{{url_for('tentang')}}">Tentang</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <hr>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

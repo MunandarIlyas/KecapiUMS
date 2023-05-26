@@ -1,0 +1,44 @@
+{% extends "sidebar.html" %}
+{% block title %}
+Mata Pelajaran
+{% endblock %}
+{% block content %}
+<div class="row d-flex px-5 z-1">
+<div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="mx-2 my-5 py-1 px-1 align-items-center border border-danger">
+        <div class="py-3 mb-1 bg-body-secondary text-center rounded">
+        <h5>Mata Pelajaran</h5>
+        </div>
+        <div class="py-5 bg-primary text-center rounded text-light">
+        <h3>{{tabel_mapel}}</h3>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="mx-2 my-5 py-1 px-1 align-items-center border border-danger">
+        <div class="py-3 mb-1 bg-body-secondary text-center rounded">
+        <h5>Soal</h5>
+        </div>
+        <div class="py-5 bg-primary text-center rounded text-light">
+        <h3>{{tabel_soal}}</h3>
+        </div>
+    </div>
+</div>
+<div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="mx-2 my-5 py-1 px-1 align-items-center border border-danger">
+        <div class="py-3 mb-1 bg-body-secondary text-center rounded">
+        <h5>Sesi Kuis</h5>
+        </div>
+        <div class="py-5 bg-primary text-center rounded text-light">
+        <h3>{{tabel_sesi}}</h3>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#sbdashboard").addClass("active");
+    });
+</script>
+{% endblock %}

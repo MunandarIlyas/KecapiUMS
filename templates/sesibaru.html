@@ -1,0 +1,62 @@
+{% extends "sidebar.html" %}
+{% block title %}
+Mata Pelajaran
+{% endblock %}
+{% block content %}
+
+<div class="row d-flex px-5 z-1">
+    <div class="col-5">
+        <h4 class="py-5">Sesi Kuis Tersedia</h4>
+        <table class="table table-striped table-hover">
+            <tr class="text-center">
+            <th>Kode Kuis</th>
+            <th>Mata Pelajaran</th>
+            <th>Hapus Sesi</th>
+            <th>Mulai Kuis</th>
+            </tr>
+            {% for i in data %}
+            <tr>
+            <td class="text-center">{{i.0}}</td>
+            <td>{{i.1}}</td>
+            <td class="text-center"><a href="/deletesesi/{{ i.0 }}" class="btn btn-danger" onclick="return confirm('Yakin Hapus Data?')"><img src="static/img/icons/trash.svg" class="rounded" style="width: 20px;">  Delete</a></td>
+            <td class="text-center">
+                <form action="{{url_for('mulaikuis')}}" method="post">
+                <input type="hidden" value="{{i.0}}" name="id_sesi"/>
+                <button type="submit" class="btn btn-success"><img src="static/img/icons/play.svg" class="rounded" style="width: 20px;">  Start</button>
+                </form>
+            </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="col col-4 offset-xl-1">
+        <h4 class="py-5">Buat Sesi Kuis</h4>
+        <table class="table table-striped table-hover">
+            <tr class="text-center">
+            <th>Daftar Mata Pelajaran</th>
+            <th>Buat Sesi</th>
+            </tr>
+            {% for i in mapel %}
+            <tr>
+            <td>{{i.2}}</td>
+            <td class="text-center">
+                <form action="{{url_for('insertsesi')}}" method="post">
+                    <input type="hidden" value="{{ i.0 }}" name="id_mapel">
+                    <button type="submit" class="btn btn-primary"><img src="static/img/icons/plus.svg" class="rounded" style="width: 20px;">  Buat Sesi</button>
+                </form>
+            </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#sbsesi").addClass("active");
+    });
+</script>
+
+{% endblock %}

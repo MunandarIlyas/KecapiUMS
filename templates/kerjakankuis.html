@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %}{% endblock %}kumat!!!</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery-3.6.1.js"></script>
+    <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+    {% endblock%}
+</head>
+<body>
+    <div class="container-fluid h-custom">
+        <div class="justify-content-center align-items-center py-1">
+
+            <center><a class="btn btn-success" id="btn-siap" href="/gantistatuspeserta">SIAP</a>
+            <p id="tabel_peserta">Tunggu Sebentar</p></center>
+
+            <table class="table text-center" id='tabelheader' width="80%">
+                <tr>
+                    <td class="" width="50%">{{nama_peserta}}</td>
+                    <td class="text-danger" id="time">--</td>
+                </tr>
+                <tr>
+                    <td class="" id="no" colspan="2">
+                    </td>
+                </tr>
+            </table>
+            <!--<a class="kuis_header">Sisa Waktu : </a><a id="time"></a>
+            <a class="kuis_header">No : </a><a id="no">--</a>-->
+            <a id="id_soal"></a>
+            <p id="tabel_jawaban">Tunggu Sebentar</p>
+            <button class="btn btn-primary w-100 py-5 mb-2" id="soal"></button><br>
+            <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanA"></button><br>
+            <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanB"></button><br>
+            <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanC"></button><br>
+            <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanD"></button><br>
+            <button class="btn btn-success mt-2" id="next">Simpan</button><br>
+            <input type="hidden" value="{{i}}" id="i">
+    </div>
+</div>
+    
+<script src="static/js/script.js"></script>
+    <script>
+        var current_number = '';
+
+        $(document).ready(function () {
+                     
+            var count = 1;
+            const obj = {{soal | safe}};
+            const Myjson = JSON.stringify(obj);
+            const data = JSON.parse(Myjson);
+            const jumlah_soal = Object.keys(data).length;
+            let jawaban = '';
+            let id_soal = '';
+            var time = '';
+            var time_left = '';
+            var total_time = '';
+            var rasio = '';
+            var t_jawaban = '';
+            var interval = '';
+            var interval2 = '';
+            var t_peserta = '';
+
+            
+            sembunyikan_soal();
+
+            function sembunyikan_soal() {   
+                $('.kuis_header').hide();
+                $('#no').hide();
+                $('#id_soal').hide();
+                $('#soal').hide();
+                $('#jawabanA').hide();
+                $('#jawabanB').hide();
+                $('#jawabanC').hide();
+                $('#jawabanD').hide();
+                $('#next').hide();
+                $('#tabel_jawaban').hide(); 
+                $('#tabelheader').hide();
+            };
+
+            function tampilkan_soal(){
+                $('.kuis_header').show();
+                $('#no').show();
+                $('#soal').show();
+                $('#jawabanA').show();
+                $('#jawabanB').show();
+                $('#jawabanC').show();
+                $('#jawabanD').show();
+                $('#next').show();
+                $('#time').show();
+                $('#tabelheader').show();
+                $('#btn-siap').hide();
+                $('#tabel_jawaban').hide(); 
+                $('#tabel_peserta').hide(); 
+            };
+
+            //adding_Questions(data, count);
+
+            interval = setInterval(update_values, 1000);
+            interval2 = setInterval(update_values2, 1000);
+
+            function update_values() {
+                $.getJSON($SCRIPT_ROOT + '/tabel_peserta',
+
+                function(data) {
+                    const dataku = JSON.stringify(data.result)
+                    const datasesi = JSON.parse(dataku)
+                    //console.log(datasesi)
+                    let text = "<table class='table text-center'><tr><th width='70%'>Nama Peserta</th><th>Status</th></tr>"
+                    for (let x in datasesi) {
+                        text += "<tr><td class='center'>" + datasesi[x][0] + "</td><td>" + datasesi[x][1] + "</td></tr>";
+                        //console.log(datasesi[0][3])
+                    }
+                    text += "</select>"
+                    $('#tabel_peserta').html(text); 
+                });
+
+            };
+
+            function tabel_jawaban() {
+                $.getJSON($SCRIPT_ROOT + "/tabel_jawaban/" + id_soal + "",
+
+                function(data) {
+                    const dataku = JSON.stringify(data.result)
+                    const datatabel = JSON.parse(dataku)
+                    //console.log(datasesi)
+                    let text = "<table class='table text-center'><tr><th width='70%'>Nama Peserta</th><th>Jawaban</th></tr>"
+                    for (let x in datatabel) {
+                        text += "<tr><td class='center'>" + datatabel[x][0] + "</td><td>" + datatabel[x][3] + "</td></tr>";
+                        //console.log(datasesi[0][3])
+                    }
+                    text += "</select>"
+                    $('#tabel_jawaban').html(text);
+                });
+
+            };
+
+            function tabel_peserta() {
+                $('#tabel_peserta').show(); 
+                
+                $.getJSON($SCRIPT_ROOT + '/tabel_peserta',
+                        
+                function(data) {
+                    const dataku = JSON.stringify(data.result)
+                    const datasesi = JSON.parse(dataku)
+                    //console.log(datasesi)
+                    let text = "<table class='table'><tr><th width='80%'>Nama Peserta</th><th width='20%'>Score</th></tr>"
+                    for (let x in datasesi) {
+                        text += "<tr><td class='center'>" + datasesi[x][0] + "</td><td class='center'>" + datasesi[x][2] + "</td></tr>";
+                        //console.log(datasesi[0][3])
+                    }
+                    text += "</select>"
+                    document.getElementById("tabel_peserta").innerHTML = text;
+                });
+
+            };
+
+            function update_values2() {
+
+                $.getJSON($SCRIPT_ROOT + '/get_current_number',
+
+                function(dat) {
+                    const dataku = JSON.stringify(dat.current_number)
+                    const datasesi = JSON.parse(dataku)
+                    current_number = datasesi[0]
+                });
+                if (current_number == count){
+                    clearInterval(interval);
+                    clearInterval(interval2);
+                    clearInterval(t_jawaban);
+                    adding_Questions(data, count);
+                    $('#tabel_peserta').hide(); 
+                }
+                else if (current_number > count) {
+                    count++;
+                }
+            };
+            
+
+            function adding_Questions(data, i) {
+                
+                tampilkan_soal();
+                let nomor = 'No ' + data[i].no + '/' + jumlah_soal
+                $('#no').text(nomor)
+                $('#id_soal').text(data[i].id_soal)
+				$('#soal').text(data[i].soal)
+				$('#jawabanA').text(data[i].jawabanA)
+				$('#jawabanB').text(data[i].jawabanB)
+				$('#jawabanC').text(data[i].jawabanC)
+				$('#jawabanD').text(data[i].jawabanD)
+                
+                timer = setInterval(timer_function, 1000);
+                id_soal = data[i].id_soal
+                total_time = data[i].waktu
+                time_left = data[i].waktu
+                function timer_function() {
+                    $('#time').text(time_left);
+                    if (time_left < 1) {
+                        time_left = 2;
+                        //clearInterval(timer);
+                        //sembunyikan_soal(); 
+                        if (count==jumlah_soal){
+                            console.log("Selesai")
+                        }else{
+                            count++
+                }   
+                    }
+                    time_left--;
+                }
+			}
+        
+            $('#next').on('click', function(){
+                clearInterval(timer);
+                $('#time').text("--");
+                if (count==jumlah_soal){
+                    simpan_jawaban()
+                    t_peserta = setInterval(tabel_peserta, 1000);
+                    console.log("Selesai")
+                    sembunyikan_soal();
+                } else if (count == jumlah_soal-1){
+                    
+                    $('#next').text("Selesai")
+                    $(".pilihan_ganda").removeClass("active");
+                    count++
+                    sembunyikan_soal();
+                    simpan_jawaban();
+                    t_jawaban = setInterval(tabel_jawaban, 1000);
+                    $('#tabel_jawaban').show();
+                    interval2 = setInterval(update_values2, 1000);
+
+                } else {
+                    $(".pilihan_ganda").removeClass("active");
+                    count++
+                    //adding_Questions(data, count);
+                    sembunyikan_soal();
+                    simpan_jawaban();
+                    t_jawaban = setInterval(tabel_jawaban, 1000);
+                    $('#tabel_jawaban').show();
+                    interval2 = setInterval(update_values2, 1000);
+                }                
+            })
+
+            function simpan_jawaban() {
+                $.ajax({
+                        data : {
+                            jawaban : jawaban,
+                            id_soal : $('#id_soal').text(),
+                            waktu : total_time - time_left,
+                            rasio : time_left / total_time
+                        },
+                        type : 'POST',
+                        url : '/simpanjawaban'
+                    })
+            }
+
+            $(".pilihan_ganda").click(function () {
+                $(this).addClass("active");
+                $(this).siblings().removeClass("active");
+            });
+
+            $("#jawabanA").click(function () {
+                jawaban = 'A';
+            });
+
+            $("#jawabanB").click(function () {
+                jawaban = "B";
+            });
+
+            $("#jawabanC").click(function () {
+                jawaban = "C";
+            });
+
+            $("#jawabanD").click(function () {
+                jawaban = "D";
+            });
+        })
+    </script>
+</body>
+
+</body>
+</html>

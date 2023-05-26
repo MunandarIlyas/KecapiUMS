@@ -1,0 +1,23 @@
+{% extends "nav.html" %}
+{% block title %}
+Homepage
+{% endblock %}
+{% block content %}
+<div class="py-5 container-sm">
+<h4>Hallo</h4>
+<br>
+<h4>Selamat Datang di Aplikasi KECAPI!!!</h4>
+<br>
+<br>
+<p style="text-align: justify; text-indent: 0.5in;">KECAPI keapanjangannya adalah Kuis cErdas CermAt PendIdikan, Lomba Cerdas Cermat (LCC) adalah sarana edukasi yang menyenangkan. Peserta beradu cepat menjawab pertanyaan yang diberikan. selain cepat, jawaban juga harus tepat sesuai dengan apa yang diinginkan. Dalam perlombaan cerdas cermat peserta didik dapat menguji pengetahuan, kemampuan dan melatih jiwa kompetitif.</p>
+
+<p style="text-align: justify; text-indent: 0.5in;">Penilaian pembelajaran merupakan suatu upaya untuk mendapatkan informasi mengenai perkembangan pseserta didik dalam pembelajaran untuk mengetahui tingkat tercapainya tujuan pembelajaran. Salah satu bentuk penilaian pembelajaran yang popular adalah dengan memberikan kuis, pemberian kuis bertujuan untuk mengetahui tingkat pemahaman peserta didik terhadap materi yang telah diajarkan. Kuis juga adalah sebagai bentuk melatih peserta didik dalam memberikan timbal balik terhadap materi yang sudah disampaikan, sehingga peserta didik dapat membangun asesmen diri atas tingkat pemahaman yang dicapai. Namun, kuis yang disajikan secara konvensional dengan kertas dan pensil dapat dianggap kurang efisien karena memakan waktu yang cukup lama dalam pengerjaan, mengevaluasi jawaban dan memberikan umpan balik. Maka aplikasi kuis dengan memanfaatkan teknologi digital yang terintegrasi internet akan membantu meningkatkan efisiensi proses penilaian. </p>
+</div>
+
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#nav-homepage").addClass("active");
+    });
+</script>
+{% endblock %}

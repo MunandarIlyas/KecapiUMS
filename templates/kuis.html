@@ -1,0 +1,46 @@
+{% extends "nav.html" %}
+{% block title %}
+Kuis
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form action="{{url_for('kerjakan')}}" method="post">
+          <div class="divider d-flex align-items-center mt-4">
+            <h4 class="pt-5 align-items-center">Kerjakan Kuis</h4>
+          </div>
+          <h5 class="pt-5 align-items-center text-danger">{{msg}}</h5>
+
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="text" name="nama" value="{{nama}}" id="form3Example3" class="form-control form-control-lg"
+              placeholder="Masukan Nama" />
+          </div>
+
+          <div class="form-outline mb-3">
+            <input type="password" name="id_sesi" value="{{id_sesi}}"  id="form3Example4" class="form-control form-control-lg"
+              placeholder="Masukan Kode Kuis" />
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;">Kerjakan</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+</div>
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#nav-kuis").addClass("active");
+    });
+</script>
+{% endblock %}

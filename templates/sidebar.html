@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %}{% endblock %}Pengajar</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery-3.6.1.js"></script>
+    <title>Bootstrap Example</title>
+    {% endblock%}
+</head>
+<body id="body-pd ">
+    <div class="container-fluid ">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 overflow-y-hidden">
+                <div class="col-auto d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 position-fixed bg-body-secondary z-3">
+                    <a href="#" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline pt-4">Pengajar</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item w-100 py-1">
+                            <a href="{{url_for('dashboard')}}" class="nav-link" id="sbdashboard">
+                                <img src="static/img/icons/blocks.svg" class="rounded " style="width: 22px;">  Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item w-100 py-1">
+                            <a href="{{url_for('matapelajaran')}}" class="nav-link" id="sbmapel">
+                                <img src="static/img/icons/eye.svg" class="rounded " style="width: 22px;">   Mata Pelajaran
+                            </a>
+                        </li>
+                        <li class="nav-item w-100 py-1">
+                            <a href="{{url_for('capaianpembelajaran')}}" class="nav-link" id="sbcpl">
+                                <img src="static/img/icons/lamp.svg" class="rounded " style="width: 22px;">   Capaian Pembelajaran
+                            </a>
+                        </li>
+                        <li class="nav-item w-100 py-1">
+                            <a href="{{url_for('soal')}}" class="nav-link" id="sbsoal">
+                                <img src="static/img/icons/list.svg" class="rounded " style="width: 22px;">   Soal
+                            </a>
+                        </li>
+                        <li class="nav-item w-100 py-1">
+                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link" id="sbsesi">
+                                <img src="static/img/icons/timer.svg" class="rounded " style="width: 22px;">   Sesi Kuis</a>
+                            <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                                <li class="nav-item w-110 pl-3 py-2">
+                                    <a href="{{url_for('sesibaru')}}" class="nav-link text-dark">
+                                        <img src="static/img/icons/plus.svg" class="rounded " style="width: 22px;">   Sesi Baru
+                                    </a>
+                                </li>
+                                <li class="nav-item w-100 pl-3 py-2">
+                                    <a href="{{url_for('sesiselesai')}}" class="nav-link text-dark">
+                                        <img src="static/img/icons/document.svg" class="rounded" style="width: 22px;">   Sesi Selesai
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item w-100 py-1">
+                            <a href="{{url_for('logout')}}" class="nav-link" id="sbsoal">
+                                <img src="static/img/icons/bag.svg" class="rounded" style="width: 22px;">   Keluar
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

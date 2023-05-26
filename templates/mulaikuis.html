@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{% block title %}{% endblock %}kumat!!!</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/jquery-3.6.1.js"></script>
+    <script type="text/javascript">var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+    {% endblock%}
+</head>
+<body>
+    <div class="container-fluid h-custom">
+        <div class="justify-content-center align-items-center py-5">
+        <h2 class="text-center">{{data.1}}</h2>
+        <h4 class="text-center text-success" id="text-jumlah">Jumlah Soal : {{jumlah_soal}}</h4>
+        <center><a class="btn btn-success" id="btn-mulai" href="/gantisesi/{{ data.0 }}">Mulai</a></center>
+        </div>
+    </div>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-5">
+                <p id="tabel_peserta"></p>
+            </div>
+            <div class="col col-4 offset-xl-1">
+                <h4 class="text-center text-success" id="nomor"></h4>
+                <center><a class="btn btn-success mx-2" id="btn-selanjutnya" href="{{url_for('nomor_kuis_inc')}}">Selanjutnya</a><a class="btn btn-danger mx-2" id="btn-selesai" href="/selesai" onclick="return confirm('Menyelesaikan Kuis & Kembali Ke Halaman Pengajar')">Selesai</a></center>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var tabel_peserta = setInterval(tabel_peserta, 1000);
+        var jumlah_soal = {{ jumlah_soal }} 
+        var get_c_n = setInterval(get_current_number, 1000);
+
+        sembunyikan();
+
+        function sembunyikan(){
+            $('#nomor').hide();
+            $('#btn-selanjutnya').hide();
+            $('#btn-selesai').hide();
+        };
+        
+        function get_current_number() {
+            $.getJSON($SCRIPT_ROOT + '/get_current_number',
+
+            function(dat) {
+                const dataku = JSON.stringify(dat.current_number)
+                const datasesi = JSON.parse(dataku)
+                current_number = datasesi[0]
+                nomor = 'No ' + current_number + '/' + jumlah_soal
+                $('#nomor').text(nomor);
+            });
+        };
+
+        function tabel_peserta() {
+            $.getJSON($SCRIPT_ROOT + '/tabel_peserta',
+                    
+            function(data) {
+                const dataku = JSON.stringify(data.result)
+                const datasesi = JSON.parse(dataku)
+                //console.log(datasesi)
+                let text = "<table class='table table-striped text-center'><tr><th width='70%'>Nama Peserta</th><th width='30%'>Score</th></tr>"
+                for (let x in datasesi) {
+                    text += "<tr><td class='center'>" + datasesi[x][0] + "</td><td class='center'>" + datasesi[x][2] + "</td></tr>";
+                    //console.log(datasesi[0][3])
+                }
+                text += "</select>"
+                document.getElementById("tabel_peserta").innerHTML = text;
+            });
+
+        };
+
+        $('#btn-mulai').click(function() {
+            $('#btn-mulai').hide();
+            $('#text-jumlah').hide();
+            $('#nomor').show();
+            $('#btn-selanjutnya').show();
+            $('#btn-selesai').show();
+        })
+    })
+</script>
+</html>

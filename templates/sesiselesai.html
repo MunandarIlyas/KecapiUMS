@@ -1,0 +1,41 @@
+{% extends "sidebar.html" %}
+{% block title %}
+Mata Pelajaran
+{% endblock %}
+{% block content %}
+
+<div class="row d-flex px-5 z-1">
+    <div class="col-5">
+        <h4 class="py-5">Sesi Kuis yang Telah Selesai</h4>
+        <table class="table table-striped table-hover">
+            <tr class="text-center">
+            <th>Kode Kuis</th>
+            <th>Mata Pelajaran</th>
+            <th>Hapus Sesi</th>
+            <th>Laporan</th>
+            </tr>
+            {% for i in data %}
+            <tr>
+            <td class="text-center">{{i.0}}</td>
+            <td>{{i.1}}</td>
+            <td class="text-center"><a href="/deletesesi/{{ i.0 }}" class="btn btn-danger" onclick="return confirm('Yakin Hapus Data?')"><img src="static/img/icons/trash.svg" class="rounded" style="width: 20px;">  Hapus</a></td>
+            <td class="text-center">
+                <form action="/hasilkuis" method="post">
+                    <input type="hidden" value="{{i.0}}" name="id_sesi"/>
+                    <button type="submit" class="btn btn-primary"><img src="static/img/icons/award.svg" class="rounded" style="width: 20px;">  Laporan</button>
+                </form>
+            </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#sbsesi").addClass("active");
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "nav.html" %}
+{% block title %}
+Homepage
+{% endblock %}
+{% block content %}
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#nav-tentang").addClass("active");
+    });
+</script>
+{% endblock %}

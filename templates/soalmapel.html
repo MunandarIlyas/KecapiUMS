@@ -1,0 +1,134 @@
+{% extends "sidebar.html" %}
+{% block title %}
+Mata Pelajaran
+{% endblock %}
+{% block content %}
+<div class="row d-flex px-5 z-1">
+    <div class="col col-5">
+        <h4 class="py-5">Memasukan Data Soal</h4>
+        <h5>Mata Pelajaran {{nama_mapel}}</h5>
+        <div class="p-3 bg-body-tertiary">
+        <table class="table table-borderless">
+            <tr class="text-center">
+            <th colspan="2" class="pb-4">Soal - Soal {{ nama_mapel }}</th>
+            <th class="pb-4">Aksi</th>
+            </tr>                 
+            {% for i in data %}
+            <tr>
+                <th class="p-3 text-center border-top border-info-subtle" colspan="3">{{i.2}}</th>
+                
+            </tr>
+            <tr>
+                <td>A. {{i.3}}</td>
+                <td>B. {{i.4}}</td>
+                <td rowspan="2" class="text-center">
+                    <a href="/deletesoal/{{ i.0 }}" class="btn btn-danger" onclick="return confirm('Yakin Hapus Data?')">Hapus</a>
+                </td>
+            </tr>
+            <tr>
+                <td>C. {{i.5}}</td>
+                <td>D. {{i.6}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">Kunci Jawaban : {{i.7}}<br>Waktu Menjawab : {{i.8}} detik</td>
+                <td class="text-center"><a href="#!" class="btn btn-info" data-target="#Edit{{ i.0 }}" onclick="openForm{{ i.0 }}()">Edit</a></td>
+            </tr>
+
+            <div class="modal" id="Edit{{ i.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form action="{{ url_for('updatesoal')}}" method="post">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Soal</h1>
+                            <button type="button" class="btn-close" onclick="closeForm{{ i.0 }}()" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id_soal" value="{{ i.0 }}">
+                            <textarea name="soal" class="form-control" id="exampleFormControlTextarea1" rows="3" required>{{i.2}}</textarea>
+                            <input type="text" name="j1" class="form-control my-1" value="{{i.3}}" required>
+                            <input type="text" name="j2" class="form-control my-1" value="{{i.4}}" required>
+                            <input type="text" name="j3" class="form-control my-1" value="{{i.5}}" required>
+                            <input type="text" name="j4" class="form-control my-1" value="{{i.6}}" required>
+                            <select name="cpl" class="form-select">
+                            <label class="form-label">Indikator / CPL</label>
+                                <option value="0">Pilih Indikator / CPL</option>
+                                {% for x in cpl %} 
+                                <option value="{{x.0}}"><label class="form-label">{{x.1}}</label></option>
+                                {% endfor %}
+                            </select>
+                            <label class="form-label">Pilih Jawaban Benar</label>
+                            <select name="jtrue" class="form-select" id="jawaban">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                            <label class="form-label">Waktu Menjawab</label>
+                            <input type="text" name="waktu" class="form-control"  value="{{i.8}}" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeForm{{ i.0 }}()">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <script>
+                $('#jawaban.form-select').removeAttr('selected').filter('[value=D]').attr('selected', true);
+
+                function openForm{{ i.0 }}() {
+                    document.getElementById("Edit{{ i.0 }}").style.display = "block";
+                }
+
+                function closeForm{{ i.0 }}() {
+                    document.getElementById("Edit{{ i.0 }}").style.display = "none";
+                }
+                </script>
+            {% endfor %}
+        </table>
+        <h5 class="text-center text-danger">{{msg}}</h5>
+        </div>
+    </div>
+    <div class="col col-5">
+        <div class="col col-4 position-fixed">
+        <h4 class="py-3">Lebih Banyak Soal</h4>
+        <form action="{{url_for('insertsoal')}}" method="post">
+        <label class="form-label">Masukan Soal</label>
+        <textarea name="soal" class="form-control" id="exampleFormControlTextarea1" placeholder="Masukan Soal Disini!!!" rows="3" required></textarea>
+        <input type="text" name="j1" class="form-control my-1" placeholder="A. " required>
+        <input type="text" name="j2" class="form-control my-1" placeholder="B. " required>
+        <input type="text" name="j3" class="form-control my-1" placeholder="C. " required>
+        <input type="text" name="j4" class="form-control my-1" placeholder="D. " required>
+        <select name="cpl" class="form-select">
+        <label class="form-label">Indikator / CPL</label>
+            <option value="0">Pilih Indikator / CPL</option>
+            {% for x in cpl %} 
+            <option value="{{x.0}}"><label class="form-label">{{x.1}}</label></option>
+            {% endfor %}
+        </select>
+        <label class="form-label">Pilih Jawaban Benar</label>
+        <select name="jtrue" class="form-select">
+            <option value="A" selected>A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+        </select>
+        
+        <label class="form-label">Waktu Menjawab</label>
+        <input type="text" name="waktu" class="form-control" placeholder="Dalam Satuan Detik(s)" required>
+        <button type="submit" class="btn btn-primary mt-3">Tambahkan Soal</button>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $( window ).on( "load", function() {
+        $("nav-link").removeClass("active");
+        $("#sbsoal").addClass("active");
+    });
+</script>
+{% endblock %}
