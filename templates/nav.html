@@ -15,10 +15,10 @@
     {% endblock%}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg bg-light pb-4 border-bottom border-dark">
         <div class="pt-3 container-fluid container-mw">
             <a class="navbar-brand" href="#">
-                <img src="static/img/logokotak.png" alt="Bootstrap" width="30" height="24">
+                <img src="static/img/logokotak.png" alt="Bootstrap" width="auto" height="50">
                 KECAPI
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,29 +26,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('index')}}" id="nav-homepage">Homepage</a>
+                    <li class="nav-item px-2">
+                    <a class="nav-link" href="{{url_for('index')}}" id="nav-homepage"><img src="static/img/icons/home.svg" alt="Bootstrap" width="auto" height="20">   Homepage</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link" aria-current="page" id="nav-kuis" href="{{url_for('kuis')}}">Kuis</a>
+                    <li class="nav-item px-2">
+                    <a class="nav-link" aria-current="page" id="nav-kuis" href="{{url_for('kuis')}}"><img src="static/img/icons/doodle.svg" alt="Bootstrap" width="auto" height="20">   Kuis</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link" id="nav-pengajar" href="{{url_for('pengajar')}}">Pengajar</a>
+                    <li class="nav-item px-2">
+                    <a class="nav-link" id="nav-pengajar" href="{{url_for('pengajar')}}"><img src="static/img/icons/portfolio.svg" alt="Bootstrap" width="auto" height="20">   Pengajar</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link" id="nav-panduan" href="{{url_for('panduan')}}">Panduan</a>
+                    <li class="nav-item px-2">
+                    <a class="nav-link" id="nav-panduan" href="{{url_for('panduan')}}"><img src="static/img/icons/compass.svg" alt="Bootstrap" width="auto" height="20">   Panduan</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav me-3">
                     <li class="nav-item">
-                        <a class="nav-link" id="nav-tentang" href="{{url_for('tentang')}}">Tentang</a>
+                        <a class="nav-link" id="nav-tentang" href="{{url_for('tentang')}}"><img src="static/img/icons/user.svg" alt="Bootstrap" width="auto" height="20">   Tentang</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <hr>
     <div class="container">
         {% block content %}
         {% endblock %}
