@@ -24,18 +24,21 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    id_user = session['user']
-    cur = mysql.connection.cursor()
-    cur.execute('select count(*) from tabel_mapel where id_user = %s', (id_user,))
-    tabel_mapel = cur.fetchone()
-    tabel_mapel = tabel_mapel[0]
-    cur.execute('SELECT count(*) FROM `tabel_soal` INNER JOIN `tabel_mapel` ON tabel_soal.id_mapel = tabel_mapel.id_mapel WHERE tabel_mapel.id_user = %s', (id_user,))
-    tabel_soal = cur.fetchone()
-    tabel_soal = tabel_soal[0]
-    cur.execute('select count(*) from sesi_kuis where id_user = %s', (id_user,))
-    tabel_sesi = cur.fetchone()
-    tabel_sesi = tabel_sesi[0]
-    return render_template('dashboard.html', id = id, tabel_mapel=tabel_mapel, tabel_soal=tabel_soal, tabel_sesi=tabel_sesi)
+    if session['loggedid'] == False:
+        return redirect(url_for('pengajar'))
+    else:
+        id_user = session['user']
+        cur = mysql.connection.cursor()
+        cur.execute('select count(*) from tabel_mapel where id_user = %s', (id_user,))
+        tabel_mapel = cur.fetchone()
+        tabel_mapel = tabel_mapel[0]
+        cur.execute('SELECT count(*) FROM `tabel_soal` INNER JOIN `tabel_mapel` ON tabel_soal.id_mapel = tabel_mapel.id_mapel WHERE tabel_mapel.id_user = %s', (id_user,))
+        tabel_soal = cur.fetchone()
+        tabel_soal = tabel_soal[0]
+        cur.execute('select count(*) from sesi_kuis where id_user = %s', (id_user,))
+        tabel_sesi = cur.fetchone()
+        tabel_sesi = tabel_sesi[0]
+        return render_template('dashboard.html', id = id, tabel_mapel=tabel_mapel, tabel_soal=tabel_soal, tabel_sesi=tabel_sesi)
 
 @app.route('/kuis')
 def kuis():
