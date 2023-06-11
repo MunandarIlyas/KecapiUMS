@@ -34,12 +34,12 @@
             <a class="kuis_header">No : </a><a id="no">--</a>-->
             <a id="id_soal"></a>
             <p id="tabel_jawaban">Tunggu Sebentar</p>
-            <button class="btn btn-primary w-100 py-5 mb-2" id="soal"></button><br>
+            <button class="btn btn-primary w-100 py-5 mb-2 fw-bold" id="soal"></button><br>
             <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanA"></button><br>
             <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanB"></button><br>
             <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanC"></button><br>
             <button class="btn btn-info w-100 py-3 my-2 pilihan_ganda" id="jawabanD"></button><br>
-            <button class="btn btn-success mt-2" id="next">Simpan</button><br>
+            <button class="btn btn-success mt-2" id="next">SIMPAN</button><br>
             <input type="hidden" value="{{i}}" id="i">
     </div>
 </div>
@@ -259,8 +259,16 @@
             }
 
             $(".pilihan_ganda").click(function () {
-                $(this).addClass("active");
-                $(this).siblings().removeClass("active");
+                $("#jawabanA").removeClass("btn-success");
+                $("#jawabanA").addClass("btn-info");
+                $("#jawabanB").removeClass("btn-success");
+                $("#jawabanB").addClass("btn-info");
+                $("#jawabanC").removeClass("btn-success");
+                $("#jawabanC").addClass("btn-info");
+                $("#jawabanD").removeClass("btn-success");
+                $("#jawabanD").addClass("btn-info");
+                $(this).removeClass("btn-info");
+                $(this).addClass("btn-success");
             });
 
             $("#jawabanA").click(function () {
